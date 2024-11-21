@@ -1,0 +1,14 @@
+﻿@page
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Service @Configuration["ServiceName"]</h1>
+    <p>Pod Name: @Configuration["PodName"]</p>
+    <p>Pod IP: @Configuration["PodIP"]</p>
+</div>
