@@ -29,6 +29,8 @@ spec:
         env:
           - name: ServiceName
             value: "A"
+          - name: API_PATH_BASE
+            value: "service-a"
           - name: PodName
             valueFrom:
               fieldRef:

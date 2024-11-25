@@ -9,13 +9,20 @@ namespace Service
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            var basePath = Environment.GetEnvironmentVariable("API_PATH_BASE")?.Trim().TrimStart('/');
+
+            Console.WriteLine($"pathBase: {basePath}");
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            if (!string.IsNullOrWhiteSpace(basePath))
+                app.UsePathBase('/' + basePath);
+
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
             }
+
             app.UseStaticFiles();
 
             app.UseRouting();
