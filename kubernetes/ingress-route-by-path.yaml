@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: service-a
+  namespace: example-kubernetes
+  # annotations:
+    # using rewrite-target on apps that require static content (js, css) often causes issues
+    # the browser request on service.com/css/site.css instead of service.com/service-a/css/site.css
+    # this cause a 404 error
+    # https://stackoverflow.com/questions/56625822/asp-net-core-2-2-kubernetes-ingress-not-found-static-content-for-custom-path/57212033#57212033
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: service.com
+    http:
+      paths:
+      - path: /service-a
+        pathType: Prefix
+        backend:
+          service:
+            name: service-a
+            port:
+              number: 80
+      # - path: /service-a(/|$)(.*)
+      #   pathType: ImplementationSpecific
+      #   backend:
+      #     service:
+      #       name: service-a
+      #       port:
+      #         number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: service-b
+  namespace: example-kubernetes
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: service.com
+    http:
+      paths:
+      - path: /service-b
+        pathType: Prefix
+        backend:
+          service:
+            name: service-b
+            port:
+              number: 80
+---
