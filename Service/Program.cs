@@ -9,7 +9,7 @@ namespace Service
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            var basePath = Environment.GetEnvironmentVariable("API_PATH_BASE")?.Trim().TrimStart('/');
+            var basePath = builder.Configuration["ApiPathBase"]?.Trim().TrimStart('/');
 
             Console.WriteLine($"pathBase: {basePath}");
 
