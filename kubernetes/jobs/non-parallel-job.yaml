@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: non-parallel-job
+spec:
+  template:
+    metadata:
+      name: non-parallel-pod
+    spec:
+      containers:
+      - name: non-parallel-container
+        image: alpine
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Starting the script";
+            echo "Waiting for 5 seconds...";
+            sleep 5;
+            echo "Wait time completed.";
+      restartPolicy: Never
+  completions: 3
