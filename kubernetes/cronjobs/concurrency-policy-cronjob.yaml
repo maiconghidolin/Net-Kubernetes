@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: concurrency-policy-cronjob
+  namespace: example-kubernetes
+spec:
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Forbid  # Do not allow concurrent executions
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: concurrency-policy-cronjob-container
+            image: alpine
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                echo "Starting the script";
+                echo "Waiting for 60 seconds...";
+                sleep 60;
+                echo "Wait time completed.";
+          restartPolicy: Never

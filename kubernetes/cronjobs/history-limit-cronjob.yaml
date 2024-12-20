@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: history-limit-cronjob
+  namespace: example-kubernetes
+spec:
+  schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 2  # Retain up to 2 successful Job completions
+  failedJobsHistoryLimit: 1  # Retain only the latest failed Job completion
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: history-limit-cronjob-container
+            image: alpine
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                echo "Starting the script";
+                echo "Waiting for 5 seconds...";
+                sleep 5;
+                echo "Wait time completed.";
+          restartPolicy: Never
+  
