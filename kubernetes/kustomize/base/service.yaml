@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kustomize-service
+  namespace: kustomize-example
+  labels:
+    app: kustomize-service
+spec:
+  selector:
+    app: kustomize-deploy
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 8080

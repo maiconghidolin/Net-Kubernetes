@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-deploy
+  namespace: kustomize-example
+  labels:
+    app: kustomize-deploy
+spec:
+  selector:
+    matchLabels:
+      app: kustomize-deploy
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kustomize-deploy
+    spec:
+      containers:
+      - name: kustomize-container
+        image: maiconghidolin/net-kubernetes:latest
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
+        env:
+          - name: ServiceName
+            value: "Kustomize"
+          - name: ApiPathBase
+            value: "kustomize-deploy"
+          - name: PodName
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: PodIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
