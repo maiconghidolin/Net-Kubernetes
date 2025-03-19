@@ -1,0 +1,13 @@
+namespace:
+  name: "helm-example-dev"
+
+deployment:
+  name: "helm-deploy-dev"
+  replicas: 1
+  container:
+    name: "helm-container-dev"
+  image: "maiconghidolin/net-kubernetes"
+  tag: "latest"
+
+service:
+  name: "helm-service-dev"

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.namespace.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.name }}
+  replicas: {{ .Values.deployment.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.container.name }}
+        image: {{ .Values.deployment.image }}:{{ .Values.deployment.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
+        env:
+          - name: ServiceName
+            value: "Helm"
+          - name: ApiPathBase
+            value: "helm-deploy"
+          - name: PodName
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: PodIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        {{- if .Values.deployment.resources }}
+        resources:
+          {{- if .Values.deployment.resources.requests }}
+          requests:
+            memory: {{ .Values.deployment.resources.requests.memory | default "50Mi" | quote }}
+            cpu: {{ .Values.deployment.resources.requests.cpu | default "10m" | quote }}
+          {{- else}}
+          requests:
+            memory: "50Mi"
+            cpu: "10m"
+          {{- end}}
+          {{- if .Values.deployment.resources.limits }}
+          limits:
+            memory: {{ .Values.deployment.resources.limits.memory | default "1024Mi" | quote }}
+            cpu: {{ .Values.deployment.resources.limits.cpu | default "1" | quote }}
+          {{- else}}  
+          limits:
+            memory: "1024Mi"
+            cpu: "1"
+          {{- end }}
+        {{- else }}
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        {{- end}} 

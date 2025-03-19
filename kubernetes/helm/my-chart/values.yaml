@@ -1,0 +1,17 @@
+namespace:
+  name: "helm-example"
+
+deployment:
+  name: "helm-deploy"
+  replicas: 2
+  container:
+    name: "helm-container"
+  image: "maiconghidolin/net-kubernetes"
+  tag: "latest"
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "12m"
+
+service:
+  name: "helm-service"
